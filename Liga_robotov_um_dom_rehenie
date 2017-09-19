@@ -1,0 +1,175 @@
+#include  <stdio.h>
+
+void main() {
+	int a, b,n,k;
+	FILE *fin, *fout;
+	fin = fopen("fin.txt", "r");
+	fout = fopen("fout.txt", "w");
+	int sum;
+	sum = 0;
+	fscanf(fin, "%d", &n);
+	fscanf(fin, "%d", &k);
+	int ar1[110];
+	int ar2[110];
+
+	int i; i = 0;
+
+	//while( fscanf(fin, "%d", &a) != EOF ) {
+	for (int t = 0; t <= n - 1; t++) {
+		fscanf(fin, "%d", &a);
+		fscanf(fin, "%d", &b);
+		ar1[i] = a;
+		ar2[i] = b;
+
+		i++;
+		if (i == k) {
+		 
+			int buf;
+			if (k > 1) {
+				for (int jj = k - 1; jj > 0; jj--) {
+					for (int ii = k - 1; ii > 0; ii--) {
+						if (ar2[ii] > ar2[ii - 1]) {
+							buf = ar1[ii];
+							ar1[ii] = ar1[ii - 1];
+							ar1[ii - 1] = buf;
+							buf = ar2[ii];
+							ar2[ii] = ar2[ii - 1];
+							ar2[ii - 1] = buf;
+						}
+					}
+				}
+			}
+
+			for (int j = 0; j <= k-1; j++) {
+				fprintf(fout, "%d ", ar1[j]);
+			}
+
+			i = 0;
+		}
+	}
+
+	fclose(fin);
+	fclose(fout);
+	return 0;
+}
+*********************************
+2
+#include  <stdio.h>
+
+void main() {
+	int a, b,n,k;
+	FILE *fin, *fout;
+	fin = fopen("fin.txt", "r");
+	fout = fopen("fout.txt", "w");
+	int sum;
+	sum = 0;
+	fscanf(fin, "%d", &n);
+	fscanf(fin, "%d", &k);
+	int ar1[110];
+	int ar2[110];
+
+	int i; i = 0;
+
+	//while( fscanf(fin, "%d", &a) != EOF ) {
+	for (int t = 0; t <= n - 1; t++) {
+		for (int s = 0; s <= k - 1; s++) {
+			fscanf(fin, "%d", &a);
+			sum = sum + a;
+		}
+		if (sum > k/2) {
+			fprintf(fout, "%d ", k-sum);
+		} else {
+			fprintf(fout, "%d ", sum);
+		}
+		sum = 0;
+	}
+
+	fclose(fin);
+	fclose(fout);
+	return 0;
+}
+*************************************************
+3
+
+#include  <stdio.h>
+
+int ar[110][110];
+int a, b, n, k, ki, ks;
+
+int rec(int glv, int sv) {
+	printf("zz \n");
+	printf("%d ", ar[1][4]);
+	printf(" ,glv= , %d ", glv);
+	printf(" ,sv= , %d ", sv);
+	ar[glv][sv] = 1;
+	//зайти во все элементы glv и добавить туда sv управление над sv
+	for (int i = 1; i <= n; i++) {
+		if (glv == 4) {
+			printf(",ii = %d ", i);
+		}
+		// Если зависсымй от 4 то заходим в него ставим его главным
+		if ((ar[sv][i] == 1)&&(ar[glv][i] == 0)) {
+			printf(",i = %d ", i);
+			printf(" ,glv= , %d ", glv);
+			rec(glv, i);
+		}
+
+		// Если зависсымй от 
+		if ((ar[i][glv] == 1) && (ar[i][sv] == 0)) {
+			printf(",i = %d ", i);
+			printf(" ,glv= , %d ", glv);
+			rec(i, sv);
+		}
+	}
+	
+	return 1;
+}
+
+void main() {
+
+	FILE *fin, *fout;
+	fin = fopen("fin.txt", "r");
+	fout = fopen("fout.txt", "w");
+	int sum;
+	sum = 0;
+	fscanf(fin, "%d", &n);
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			ar[i][j] = 0;
+		}
+	}
+
+	for (int t = 0; t <= n - 1; t++) {
+		fscanf(fin, "%d", &ki);
+
+		if (ki > 0) {
+			for (int j = 1; j <= ki; j++) {
+				fscanf(fin, "%d", &ks);
+				//	ar[t+1][ks] = ks;
+				rec(ks, t + 1);
+			}
+		}
+	}
+
+	/*for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			fprintf(fout, "%d ", ar[i][j]);
+		}
+		fprintf(fout, "%d \n", 9);
+	}
+	*/
+
+	for (int i = 1; i <= n; i++) {
+		sum = 0;
+		for (int j = 1; j <= n; j++) {
+			sum = sum + ar[i][j];
+		}
+
+		fprintf(fout, "%d ", sum);
+	}
+
+	fclose(fin);
+	fclose(fout);
+	return 0;
+}
