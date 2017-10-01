@@ -1,0 +1,71 @@
+//Yandex 
+#include <fstream>
+using namespace std;
+
+int a, b, n, m, s ,d;
+ofstream fout("output.txt"); // создаём объе
+ifstream fin("input.txt"); // открыли файл для чтения
+int ar[100],br[100];
+
+
+void printar(int ar[], int n) {
+	for (int j = 1; j <= n; j++) {
+		fout << ar[j]<< " ";
+	}
+	fout << "\n";
+
+	return;
+}
+
+
+int sumar(int ar[], int n) {
+	int s = 0;
+	for (int j = 1; j <= n; j++) {
+		s = s + ar[j];
+	}
+	return s;
+}
+
+
+int main() {
+	fin >> n; // считали
+
+	for (int i = 1; i <= n; i++) {
+		fin >> ar[i];
+	}
+	fin >> m;
+
+	for (int i = 1; i < n; i++) {
+		for (int j = 1; j < n; j++) {
+			if (ar[j] > ar[j + 1])
+			{
+				s = ar[j + 1];
+				ar[j + 1] = ar[j];
+				ar[j] = s;
+			}
+		}
+	}
+
+	d = 0;
+	while (1==1){
+		for (int j = 1; j <= n; j++) {
+			br[j] = ar[j];
+		}
+		//if d==1
+		if (sumar(ar, n) == m) {
+			fout << "Yes";
+		}
+
+		printar(br, n);
+		d++;
+		if (d > n) break;
+	}
+
+//	printar(ar, n);
+	fout << sumar(ar, n);
+
+	fout.close();
+	fin.close();
+	//system("pause");
+	return 0;
+}
